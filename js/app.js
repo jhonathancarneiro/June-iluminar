@@ -4,7 +4,6 @@ const PRODUTOS = [
   { id: 'espetinho', nome: 'Espetinho', preco: 8, categoria: 'Salgados', img: '🍢' },
   { id: 'caldos', nome: 'Caldos', preco: 6, categoria: 'Salgados', img: '🍲' },
   { id: 'pipoca', nome: 'Pipoca', preco: 5, categoria: 'Salgados', img: '🍿' },
-  { id: 'amendoim', nome: 'Amendoim doce', preco: 5, categoria: 'Doces', img: '🥜' },
   { id: 'bolo-pote', nome: 'Bolo no pote', preco: 12, categoria: 'Doces', img: '🧁' },
   { id: 'espetinho-uva', nome: 'Espetinho de uva', preco: 8, categoria: 'Doces', img: '🍇' },
   { id: 'canjica', nome: 'Canjica', preco: 8, categoria: 'Doces', img: '🌽' },
