@@ -36,6 +36,7 @@ if (localStorage.getItem('festa_colheita_version') !== String(DATA_VERSION)) {
 
 const carrinho = new Map();
 let metodoPagamentoAtual = null;
+const categoriasAbertas = new Set(['Salgados', 'Doces', 'Bebidas']);
 
 const $ = (sel) => document.querySelector(sel);
 
@@ -78,12 +79,28 @@ function renderProdutos() {
         .join('');
 
       return `
-      <section class="categoria">
-        <h3>${cat}</h3>
+      <section class="categoria${categoriasAbertas.has(cat) ? '' : ' categoria--fechada'}">
+        <button type="button" class="categoria__toggle" data-cat="${cat}" aria-expanded="${categoriasAbertas.has(cat)}">
+          <span>${cat}</span>
+          <span class="categoria__chevron" aria-hidden="true">▼</span>
+        </button>
         <div class="categoria__grid">${botoes}</div>
       </section>`;
     })
     .join('');
+
+  container.querySelectorAll('.categoria__toggle').forEach((btn) => {
+    btn.addEventListener('click', () => {
+      const cat = btn.dataset.cat;
+      if (categoriasAbertas.has(cat)) {
+        categoriasAbertas.delete(cat);
+      } else {
+        categoriasAbertas.add(cat);
+      }
+      btn.closest('.categoria').classList.toggle('categoria--fechada');
+      btn.setAttribute('aria-expanded', categoriasAbertas.has(cat));
+    });
+  });
 
   container.querySelectorAll('.produto-btn').forEach((btn) => {
     btn.addEventListener('click', () => adicionarItem(btn.dataset.id));

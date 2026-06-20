@@ -148,14 +148,45 @@ body.app-bloqueada .modal {
   gap: 1.5rem;
 }
 
-.categoria h3 {
+.categoria h3,
+.categoria__toggle {
   font-size: 1.1rem;
   font-weight: 800;
   color: var(--verde);
   margin-bottom: 0.75rem;
   padding-bottom: 0.4rem;
   border-bottom: 3px solid var(--amarelo);
-  display: inline-block;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  background: none;
+  border-top: none;
+  border-left: none;
+  border-right: none;
+  font-family: inherit;
+  cursor: pointer;
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+  text-align: left;
+}
+
+.categoria--fechada .categoria__toggle {
+  margin-bottom: 0;
+}
+
+.categoria__chevron {
+  font-size: 0.75rem;
+  color: var(--madeira);
+  transition: transform 0.2s;
+}
+
+.categoria--fechada .categoria__chevron {
+  transform: rotate(-90deg);
+}
+
+.categoria--fechada .categoria__grid {
+  display: none;
 }
 
 .categoria__grid {
