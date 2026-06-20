@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Festa da Colheita — Caixa</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <header class="header">
+    <div class="header__brand">
+      <span class="header__emoji">🎪</span>
+      <div>
+        <h1>Festa da Colheita</h1>
+        <p class="header__sub">Escola Iluminar — Caixa</p>
+      </div>
+    </div>
+    <button type="button" class="btn btn--ghost" id="btn-registro">📋 Registro</button>
+  </header>
+
+  <main class="layout">
+    <section class="produtos" id="produtos"></section>
+
+    <aside class="conta">
+      <div class="conta__header">
+        <h2>Conta atual</h2>
+        <span class="conta__badge" id="conta-itens">0 itens</span>
+      </div>
+
+      <ul class="conta__lista" id="conta-lista">
+        <li class="conta__vazio">Nenhum item adicionado</li>
+      </ul>
+
+      <div class="conta__total">
+        <span>Total</span>
+        <strong id="conta-total">R$ 0,00</strong>
+      </div>
+
+      <div class="conta__acoes">
+        <button type="button" class="btn btn--danger" id="btn-limpar">Limpar Conta</button>
+        <button type="button" class="btn btn--primary btn--large" id="btn-pagar" disabled>Pagar</button>
+      </div>
+    </aside>
+  </main>
+
+  <!-- Modal Pagamento -->
+  <dialog class="modal" id="modal-pagamento">
+    <div class="modal__content">
+      <button type="button" class="modal__close" data-close>&times;</button>
+      <h2>Forma de pagamento</h2>
+      <p class="modal__valor">Valor: <strong id="pagamento-valor">R$ 0,00</strong></p>
+      <div class="pagamento-opcoes">
+        <button type="button" class="btn btn--pix" data-metodo="pix">📱 Pix</button>
+        <button type="button" class="btn btn--card" data-metodo="debito">💳 Débito</button>
+        <button type="button" class="btn btn--card" data-metodo="credito">💳 Crédito</button>
+      </div>
+    </div>
+  </dialog>
+
+  <!-- Modal Pix -->
+  <dialog class="modal modal--pix" id="modal-pix">
+    <div class="modal__content">
+      <button type="button" class="modal__close" data-close>&times;</button>
+      <p class="pix__valor" id="pix-valor">R$ 0,00</p>
+      <p class="pix__instrucao">Informe este valor ao pagador</p>
+      <div class="pix__qr">
+        <img src="assets/pix-qr.png" alt="QR Code Pix Escola Iluminar">
+      </div>
+      <p class="pix__info"><strong>ESCOLA ILUMINAR LTDA</strong><br>Chave: 10.476.011/0001-04</p>
+      <button type="button" class="btn btn--primary btn--large" id="btn-confirmar-pix">Confirmar recebimento</button>
+    </div>
+  </dialog>
+
+  <!-- Modal Confirmação Cartão -->
+  <dialog class="modal" id="modal-cartao">
+    <div class="modal__content">
+      <button type="button" class="modal__close" data-close>&times;</button>
+      <h2 id="cartao-titulo">Pagamento no cartão</h2>
+      <p class="modal__valor">Valor: <strong id="cartao-valor">R$ 0,00</strong></p>
+
+      <div class="confirmacao" id="confirmacao-passo-1">
+        <label class="confirmacao__check">
+          <input type="checkbox" id="check-maquininha">
+          <span>Pagamento aprovado na maquininha</span>
+        </label>
+        <button type="button" class="btn btn--primary btn--large" id="btn-cartao-passo-1" disabled>Continuar</button>
+      </div>
+
+      <div class="confirmacao confirmacao--oculto" id="confirmacao-passo-2">
+        <label class="confirmacao__check">
+          <input type="checkbox" id="check-venda">
+          <span>Confirmo que a venda foi concluída</span>
+        </label>
+        <div class="confirmacao__acoes">
+          <button type="button" class="btn btn--ghost-cartao" id="btn-cartao-voltar">Voltar</button>
+          <button type="button" class="btn btn--primary btn--large" id="btn-cartao-concluir" disabled>Concluir venda</button>
+        </div>
+      </div>
+    </div>
+  </dialog>
+
+  <!-- Modal Registro de Vendas -->
+  <dialog class="modal modal--wide" id="modal-registro">
+    <div class="modal__content">
+      <button type="button" class="modal__close" data-close>&times;</button>
+      <div class="registro__header">
+        <h2>Registro de vendas</h2>
+        <div class="registro__acoes">
+          <button type="button" class="btn btn--danger btn--small" id="btn-limpar-historico">Limpar histórico</button>
+          <button type="button" class="btn btn--export btn--small" id="btn-exportar">Baixar planilha</button>
+        </div>
+      </div>
+      <div class="registro__resumo" id="registro-resumo"></div>
+      <div class="registro__tabs">
+        <button type="button" class="registro__tab registro__tab--ativa" data-aba="itens">Por item</button>
+        <button type="button" class="registro__tab" data-aba="historico">Histórico</button>
+        <button type="button" class="registro__tab" data-aba="planilha">Planilha</button>
+      </div>
+      <div class="registro__painel" id="registro-itens"></div>
+      <div class="registro__painel registro__painel--oculto" id="registro-historico"></div>
+      <div class="registro__painel registro__painel--oculto" id="registro-planilha"></div>
+    </div>
+  </dialog>
+
+  <!-- Modal Senha Limpar Histórico -->
+  <dialog class="modal" id="modal-senha">
+    <div class="modal__content">
+      <button type="button" class="modal__close" data-close>&times;</button>
+      <h2>Limpar histórico</h2>
+      <p class="senha__aviso">Digite a senha para apagar todos os registros de vendas.</p>
+      <input type="password" class="senha__input" id="input-senha" inputmode="numeric" autocomplete="off" placeholder="Senha">
+      <p class="senha__erro senha__erro--oculto" id="senha-erro">Senha incorreta</p>
+      <button type="button" class="btn btn--danger btn--large" id="btn-confirmar-senha">Confirmar</button>
+    </div>
+  </dialog>
+
+  <script src="js/app.js"></script>
+</body>
+</html>
