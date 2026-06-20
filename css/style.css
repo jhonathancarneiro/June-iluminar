@@ -37,6 +37,67 @@ body {
   min-height: 100dvh;
 }
 
+body.app-bloqueada .header,
+body.app-bloqueada .layout,
+body.app-bloqueada .modal {
+  pointer-events: none;
+  user-select: none;
+}
+
+.geolock {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1.5rem;
+  background: rgba(61, 41, 20, 0.72);
+  backdrop-filter: blur(4px);
+}
+
+.geolock--oculto {
+  display: none;
+}
+
+.geolock__card {
+  background: var(--card);
+  border: 2px solid var(--madeira-clara);
+  border-radius: var(--radius);
+  padding: 2rem 1.5rem;
+  max-width: 380px;
+  width: 100%;
+  text-align: center;
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.25);
+}
+
+.geolock__emoji {
+  font-size: 3rem;
+  display: block;
+  margin-bottom: 0.75rem;
+}
+
+.geolock__card h2 {
+  color: var(--madeira);
+  font-size: 1.25rem;
+  margin-bottom: 0.6rem;
+}
+
+.geolock__card p {
+  color: var(--texto-suave);
+  font-size: 0.95rem;
+  line-height: 1.5;
+  margin-bottom: 1.25rem;
+}
+
+.geolock__btn--oculto {
+  display: none;
+}
+
+.geolock__btn {
+  width: 100%;
+}
+
 .header {
   display: flex;
   align-items: center;

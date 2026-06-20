@@ -9,7 +9,16 @@
   <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="css/style.css">
 </head>
-<body>
+<body class="app-bloqueada">
+  <div class="geolock" id="geolock">
+    <div class="geolock__card">
+      <span class="geolock__emoji">📍</span>
+      <h2 id="geolock-titulo">Verificando localização...</h2>
+      <p id="geolock-msg">Aguarde enquanto confirmamos que você está no evento.</p>
+      <button type="button" class="btn btn--primary btn--large geolock__btn geolock__btn--oculto" id="btn-geolock-retry">Tentar novamente</button>
+    </div>
+  </div>
+
   <header class="header">
     <div class="header__brand">
       <span class="header__emoji">🎪</span>

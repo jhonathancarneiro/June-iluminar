@@ -23,6 +23,12 @@ const STORAGE_KEY = 'festa_colheita_vendas';
 const SENHA_LIMPAR = '120220';
 const DATA_VERSION = 2;
 
+const GEO_LOCAIS = [
+  { lat: -25.369993953689754, lng: -49.177190003309754 },
+  { lat: -25.368137758067498, lng: -49.16282861673455 },
+];
+const GEO_RAIO_METROS = 150;
+
 if (localStorage.getItem('festa_colheita_version') !== String(DATA_VERSION)) {
   localStorage.removeItem(STORAGE_KEY);
   localStorage.setItem('festa_colheita_version', String(DATA_VERSION));
@@ -690,4 +696,78 @@ function init() {
   });
 }
 
+function distanciaMetros(lat1, lng1, lat2, lng2) {
+  const R = 6371000;
+  const toRad = (graus) => (graus * Math.PI) / 180;
+  const dLat = toRad(lat2 - lat1);
+  const dLng = toRad(lng2 - lng1);
+  const a =
+    Math.sin(dLat / 2) ** 2 +
+    Math.cos(toRad(lat1)) * Math.cos(toRad(lat2)) * Math.sin(dLng / 2) ** 2;
+  return R * 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+}
+
+function distanciaMinima(lat, lng) {
+  return Math.min(...GEO_LOCAIS.map((local) => distanciaMetros(lat, lng, local.lat, local.lng)));
+}
+
+function mostrarGeolock(titulo, msg, mostrarRetry = false) {
+  $('#geolock-titulo').textContent = titulo;
+  $('#geolock-msg').textContent = msg;
+  $('#btn-geolock-retry').classList.toggle('geolock__btn--oculto', !mostrarRetry);
+  document.body.classList.add('app-bloqueada');
+  $('#geolock').classList.remove('geolock--oculto');
+}
+
+function liberarApp() {
+  document.body.classList.remove('app-bloqueada');
+  $('#geolock').classList.add('geolock--oculto');
+}
+
+function verificarLocalizacao() {
+  mostrarGeolock('Verificando localização...', 'Aguarde enquanto confirmamos que você está no evento.');
+
+  if (!navigator.geolocation) {
+    mostrarGeolock(
+      'Localização indisponível',
+      'Seu dispositivo não suporta geolocalização. Use um tablet ou celular com GPS.',
+      true
+    );
+    return;
+  }
+
+  navigator.geolocation.getCurrentPosition(
+    (pos) => {
+      const dist = distanciaMinima(pos.coords.latitude, pos.coords.longitude);
+
+      if (dist <= GEO_RAIO_METROS) {
+        liberarApp();
+        return;
+      }
+
+      mostrarGeolock(
+        'Fora do local do evento',
+        `Este caixa só funciona nos locais do evento. Você está a cerca de ${Math.round(dist)} m do ponto mais próximo.`,
+        true
+      );
+    },
+    (err) => {
+      const msg =
+        err.code === 1
+          ? 'Permita o acesso à localização nas configurações do navegador para usar o caixa.'
+          : 'Não foi possível obter sua localização. Verifique se o GPS está ativo.';
+      mostrarGeolock('Localização necessária', msg, true);
+    },
+    { enableHighAccuracy: true, timeout: 15000, maximumAge: 10000 }
+  );
+}
+
+document.addEventListener('visibilitychange', () => {
+  if (document.visibilityState === 'visible' && document.body.classList.contains('app-bloqueada')) {
+    verificarLocalizacao();
+  }
+});
+
+$('#btn-geolock-retry').addEventListener('click', verificarLocalizacao);
+verificarLocalizacao();
 init();
