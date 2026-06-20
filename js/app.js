@@ -17,6 +17,8 @@ const PRODUTOS = [
   { id: 'suco', nome: 'Suco', preco: 4, categoria: 'Bebidas', img: '🧃' },
   { id: 'agua', nome: 'Água', preco: 4, categoria: 'Bebidas', img: '💧' },
   { id: 'refri-lata', nome: 'Refri lata', preco: 6, categoria: 'Bebidas', img: '🥤' },
+  { id: 'bingo', nome: 'bingo', preco: 7, categoria: 'eventos', img: '🍀' },
+  { id: 'Brincadeiras', nome: 'Brincadeiras', preco: 5, categoria: 'eventos', img: '🛝' },
 ];
 
 const STORAGE_KEY = 'festa_colheita_vendas';
